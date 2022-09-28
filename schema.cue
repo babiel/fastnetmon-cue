@@ -4,6 +4,11 @@ import (
 	"net"
 )
 
+config: [string]: main: #FastNetMon_Main
+config: [string]: hostgroups: [...#FastNetMon_Hostgroup_Default]
+config: [string]: bgpSessions: [...#FastNetMon_BGP]
+config: [string]: trafficRules: [...#FastNetMon_TrafficRule]
+
 #FastNetMon_Main: {
 	// af_packet
 	mirror_afpacket:                             bool | *false     // Enable capture from mirror port using AF_PACKET capture engine
@@ -122,7 +127,7 @@ import (
 	// email_notification
 	email_notifications_enabled:                    bool | *false                                                      // Enable email notifications
 	email_notifications_disable_certificate_checks: bool | *false                                                      // Disables TLS certificate validation completely
-	email_notifications_host:                       string | *"smtp.gmail.com"                                         // Hostname of SMTP server
+	email_notifications_host:                       string | *"mail.example.com"                                       // Hostname of SMTP server
 	email_notifications_port:                       >0 & <=65535 | *587                                                // Port of SMTP server used for email notifications
 	email_notifications_tls:                        bool | *true                                                       // Enable TLS for your SMTP server
 	email_notifications_auth:                       bool | *true                                                       // Enable auth for your SMTP server
@@ -400,10 +405,10 @@ import (
 #FastNetMon_BGP: {
 	name:              string | *"connection_main_router"           // System name for this connection
 	description:       string | *"Connection to main Router at NOC" // Human-friendly name for this connection
-	local_asn:         >=0 | *123456                                // Local ASN number
-	local_address:     net.IP | *"10.11.22.33"                      // Local address for BGP connection
-	remote_asn:        >=0 | *9002                                  // Remote autonomous system number
-	remote_address:    net.IP | *"10.11.22.1"                       // Remote IP address of BGP peer
+	local_asn:         >=0                                          // Local ASN number
+	local_address:     net.IP                                       // Local address for BGP connection
+	remote_asn:        >=0                                          // Remote autonomous system number
+	remote_address:    net.IP                                       // Remote IP address of BGP peer
 	multihop:          bool | *true                                 // Enable BGP multihop option
 	md5_auth:          bool | *false                                // Enable md5 auth for BGP session
 	md5_auth_password: string | *""                                 // md5 password for BGP session
